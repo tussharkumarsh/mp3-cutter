@@ -17,3 +17,7 @@ The browser sends original files plus integer-microsecond segment metadata to `P
 Timestamp input supports up to six fractional digits and is represented as integer microseconds. Digital audio is sample-based, so arbitrary microsecond boundaries cannot physically exist between samples. FFmpeg resolves each requested boundary to the closest valid sample boundary. At 44.1 kHz a sample is about 22.676 microseconds; at 48 kHz it is about 20.833 microseconds.
 
 The default upload limit is 200 MB per file and can be changed with `MAX_FILE_SIZE_MB`. Only user-provided local files are accepted; the app does not download from or extract audio from YouTube.
+
+## Vercel deployment note
+
+The Vercel serverless request-body limit is much smaller than the local 200 MB setting (approximately 4.5 MB). Vercel rejects larger multipart requests with HTTP 413 before the route runs. For larger audio, run this app on a Node server/container with a configurable body limit, or move uploads to object storage and run the FFmpeg worker separately. The UI detects this case and explains it before submitting.
