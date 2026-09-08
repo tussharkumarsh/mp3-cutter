@@ -1,8 +1,8 @@
 import { spawn } from "node:child_process";
+import path from "node:path";
 import type { AudioSegment, OutputSettings } from "@/types/audio";
-import ffmpegStatic from "ffmpeg-static";
 
-const ffmpeg = process.env.FFMPEG_PATH || ffmpegStatic;
+const ffmpeg = process.env.FFMPEG_PATH || path.join(process.cwd(), "node_modules", "ffmpeg-static", process.platform === "win32" ? "ffmpeg.exe" : "ffmpeg");
 
 export function processAudio(files: string[], segments: AudioSegment[], outputPath: string, settings: OutputSettings, onProgress?: (percent: number) => void) {
   return new Promise<void>((resolve, reject) => {
