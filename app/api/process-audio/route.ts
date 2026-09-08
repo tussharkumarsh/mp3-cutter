@@ -20,12 +20,19 @@ export async function POST(request: Request) {
     if (!files.length || !segments.length || files.length > 50) return NextResponse.json({ error: "Add at least one audio file and segment." }, { status: 400 });
     await mkdir(workDir, { recursive: true });
     const paths: string[] = [];
+    const metadata = [];
     for (const [index, file] of files.entries()) {
       if (file.size > maxBytes) return NextResponse.json({ error: `${file.name} exceeds the maximum file size.` }, { status: 413 });
       const filePath = path.join(workDir, `input-${index}`);
       await writeFile(filePath, Buffer.from(await file.arrayBuffer()));
-      await probeAudio(filePath);
+      metadata.push(await probeAudio(filePath));
       paths.push(filePath);
+    }
+    for (const segment of segments) {
+      const source = metadata[segment.fileIndex];
+      if (!source || !Number.isInteger(segment.startMicroseconds) || !Number.isInteger(segment.endMicroseconds) || segment.startMicroseconds < 0 || segment.endMicroseconds <= segment.startMicroseconds || segment.endMicroseconds > source.durationMicroseconds) {
+        return NextResponse.json({ error: "One or more selected segments are outside the source duration." }, { status: 400 });
+      }
     }
     const outputPath = path.join(workDir, "output.mp3");
     await processAudio(paths, segments, outputPath, settings);

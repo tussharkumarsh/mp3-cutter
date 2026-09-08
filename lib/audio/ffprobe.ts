@@ -1,7 +1,8 @@
 import { spawn } from "node:child_process";
 import type { AudioMetadata } from "@/types/audio";
+import ffprobeStatic from "ffprobe-static";
 
-const command = process.env.FFPROBE_PATH || "ffprobe";
+const command = process.env.FFPROBE_PATH || ffprobeStatic.path;
 
 export function probeAudio(filePath: string): Promise<AudioMetadata> {
   return new Promise((resolve, reject) => {
