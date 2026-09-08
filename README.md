@@ -23,3 +23,20 @@ The default upload limit is 200 MB per file and can be changed with `MAX_FILE_SI
 The Vercel serverless request-body limit is much smaller than the local 200 MB setting (approximately 4.5 MB), and serverless execution is not suitable for 50-minute FFmpeg jobs. Vercel rejects larger multipart requests with HTTP 413 before the route runs. For the full 200 MB / 50-minute scope, deploy this Next.js app on a Node server/container with at least 512 MB memory and a 5-minute request timeout. The route streams multipart files to disk, so it does not buffer all uploads in memory.
 
 Vercel can still host the UI: deploy this project to a long-running Node host as the processing worker, then set `NEXT_PUBLIC_AUDIO_API_URL` on Vercel to that worker URL. The route includes permissive CORS for this split deployment. For very high traffic, use object storage for upload chunks and a queue-backed FFmpeg worker instead.
+
+### Docker worker deployment
+
+This repository includes a `Dockerfile` for the large-file worker. Deploy it to Railway, Render, Fly.io, or another Docker host with at least 512 MB RAM and persistent temporary disk:
+
+```bash
+docker build -t precision-audio-cutter .
+docker run -p 3000:3000 -e MAX_FILE_SIZE_MB=200 precision-audio-cutter
+```
+
+Verify the worker at `/api/health`. Then set this exact URL in Vercel project settings, including the route path:
+
+```env
+NEXT_PUBLIC_AUDIO_API_URL=https://your-worker-host.example.com/api/process-audio
+```
+
+Redeploy Vercel after adding the variable. Do not set it to the Vercel URL itself. The worker must be publicly reachable over HTTPS and must allow request bodies of at least 200 MB.
