@@ -19,7 +19,7 @@ export function parseTimestampToMicroseconds(value: string): number | null {
     return ((hours * 3600 + minutes * 60 + seconds) * 1_000_000) + micros;
 }
 
-export function microsecondsToTimestamp(value: number, showHours = true): string {
+export function microsecondsToTimestamp(value: number, showHours = true, fractionDigits = 6): string {
     const safeValue = Math.max(0, Math.round(value));
     const hours = Math.floor(safeValue / 3_600_000_000);
     const remainingAfterHours = safeValue % 3_600_000_000;
@@ -27,7 +27,8 @@ export function microsecondsToTimestamp(value: number, showHours = true): string
     const remainingAfterMinutes = remainingAfterHours % 60_000_000;
     const seconds = Math.floor(remainingAfterMinutes / 1_000_000);
     const micros = remainingAfterMinutes % 1_000_000;
-    const base = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(micros).padStart(6, "0")}`;
+    const fraction = String(micros).padStart(6, "0").slice(0, fractionDigits);
+    const base = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${fraction}`;
     return showHours || hours > 0 ? `${String(hours).padStart(2, "0")}:${base}` : base;
 }
 
