@@ -376,6 +376,11 @@ select:focus-visible {
     border-radius: 8px;
 }
 
+.track-file-text {
+    min-width: 0;
+    flex: 1;
+}
+
 .track-file strong,
 .track-file span {
     display: block;
@@ -393,6 +398,34 @@ select:focus-visible {
     margin-top: 3px;
     color: var(--muted);
     font: 9.5px 'JetBrains Mono', monospace;
+}
+
+.marquee {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.marquee-track {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee-scroll var(--marquee-duration, 6s) ease-in-out infinite;
+    animation-play-state: paused;
+}
+
+.track:hover .marquee-track {
+    animation-play-state: running;
+}
+
+@keyframes marquee-scroll {
+    0%, 12% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(var(--marquee-distance, 0));
+    }
+    88%, 100% {
+        transform: translateX(0);
+    }
 }
 
 .segment-fields {
