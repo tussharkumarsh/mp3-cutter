@@ -23,25 +23,27 @@ async function readMultipart(request: Request, workDir: string, maxBytes: number
   const contentType = request.headers.get("content-type");
   if (!contentType?.startsWith("multipart/form-data")) throw new Error("Expected a multipart audio upload.");
   const fields: Record<string, string> = {};
-  const files: Array<{ name: string; path: string; size: number }> = [];
+  const files: Array<{ name: string; path: string; size: number } | undefined> = [];
   const writes: Promise<void>[] = [];
+  let fileIndex = 0;
   await new Promise<void>((resolve, reject) => {
     const parser = Busboy({ headers: { "content-type": contentType }, limits: { files: 50, fileSize: maxBytes } });
     parser.on("field", (name, value) => { fields[name] = value; });
     parser.on("file", (name, stream, info) => {
       if (name !== "files") { stream.resume(); return; }
-      const filePath = path.join(workDir, `input-${files.length}`);
+      const currentIndex = fileIndex++;
+      const filePath = path.join(workDir, `input-${currentIndex}`);
       let size = 0;
       stream.on("data", (chunk: Buffer) => { size += chunk.length; });
       stream.on("limit", () => reject(new Error(`${info.filename} exceeds the maximum file size.`)));
-      writes.push(pipeline(stream, createWriteStream(filePath)).then(() => { files.push({ name: info.filename, path: filePath, size }); }));
+      writes.push(pipeline(stream, createWriteStream(filePath)).then(() => { files[currentIndex] = { name: info.filename, path: filePath, size }; }));
     });
     parser.on("error", reject);
     parser.on("finish", () => { Promise.all(writes).then(() => resolve()).catch(reject); });
     if (!request.body) return reject(new Error("The upload body is empty."));
     Readable.fromWeb(request.body as never).pipe(parser);
   });
-  return { fields, files };
+  return { fields, files: files.filter((file): file is { name: string; path: string; size: number } => Boolean(file)) };
 }
 
 export async function POST(request: Request) {
