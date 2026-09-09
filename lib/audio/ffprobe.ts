@@ -7,7 +7,7 @@ const command = process.env.FFPROBE_PATH || bundledProbe;
 
 export function probeAudio(filePath: string): Promise<AudioMetadata> {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, ["-v", "error", "-select_streams", "a:0", "-show_entries", "stream=duration,sample_rate,channels,codec_name,bit_rate:format=format_name,duration", "-of", "json", filePath]);
+    const child = spawn(/* turbopackIgnore: true */ command, ["-v", "error", "-select_streams", "a:0", "-show_entries", "stream=duration,sample_rate,channels,codec_name,bit_rate:format=format_name,duration", "-of", "json", filePath]);
     let stdout = "";
     let stderr = "";
     child.stdout.on("data", (chunk) => { stdout += chunk; });

@@ -10,7 +10,7 @@ export function processAudio(files: string[], segments: AudioSegment[], outputPa
     const concatInputs = segments.map((_, index) => `[a${index}]`).join("");
     const args = ["-y", ...files.flatMap((file) => ["-i", file]), "-filter_complex", `${filter};${concatInputs}concat=n=${segments.length}:v=0:a=1[out]`, "-map", "[out]", "-ar", String(settings.sampleRate), "-ac", String(settings.channels), "-c:a", "libmp3lame", "-b:a", `${settings.bitrate}k`, "-progress", "pipe:1", "-nostats", outputPath];
     if (!ffmpeg) return reject(new Error("FFmpeg binary is unavailable. Set FFMPEG_PATH in .env.local."));
-    const child = spawn(ffmpeg, args);
+    const child = spawn(/* turbopackIgnore: true */ ffmpeg, args);
     let stderr = "";
     child.stderr.on("data", (chunk) => { stderr += chunk; });
     child.stdout.on("data", (chunk) => {
