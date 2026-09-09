@@ -1,9 +1,7 @@
 import { spawn } from "node:child_process";
-import path from "node:path";
 import type { AudioMetadata } from "@/types/audio";
 
-const bundledProbe = path.join(process.cwd(), "node_modules", "ffprobe-static", "bin", process.platform === "win32" ? "win32" : "linux", process.arch === "x64" ? "x64" : process.arch, process.platform === "win32" ? "ffprobe.exe" : "ffprobe");
-const command = process.env.FFPROBE_PATH || bundledProbe;
+const command = process.env.FFPROBE_PATH || "ffprobe";
 
 export function probeAudio(filePath: string): Promise<AudioMetadata> {
   return new Promise((resolve, reject) => {
