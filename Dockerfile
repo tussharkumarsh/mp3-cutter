@@ -5,15 +5,16 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV MAX_FILE_SIZE_MB=200
 
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --include=dev
 
 COPY . .
 RUN npm run build
+RUN npm prune --omit=dev
+ENV NODE_ENV=production
 
 EXPOSE 3000
 CMD ["sh", "-c", "npm run start -- -p ${PORT:-3000}"]
