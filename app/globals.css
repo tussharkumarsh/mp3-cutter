@@ -394,6 +394,10 @@ select:focus-visible {
     color: var(--ink);
 }
 
+.track:hover .track-file strong {
+    text-overflow: clip;
+}
+
 .track-file span {
     margin-top: 3px;
     color: var(--muted);
