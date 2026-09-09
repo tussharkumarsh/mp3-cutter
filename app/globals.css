@@ -2,23 +2,23 @@
 @import "tailwindcss";
 
 :root {
-    --ink: #eef0f7;
-    --ink-soft: #b9bdd2;
-    --muted: #83879e;
-    --line: #262a3e;
-    --line-soft: #1c2032;
-    --paper: #0a0b14;
-    --surface: #12142200;
-    --panel: #14162490;
-    --panel-solid: #14162a;
-    --accent: #a78bfa;
-    --accent-2: #f472b6;
-    --accent-3: #22d3ee;
-    --accent-soft: rgba(167, 139, 250, .12);
-    --lime: #b8f36b;
-    --orange: #ff8a5c;
+    --ink: #1c1e2a;
+    --ink-soft: #4a4e63;
+    --muted: #82869c;
+    --line: #e4e3f0;
+    --line-soft: #ecebf5;
+    --paper: #faf9fd;
+    --surface: #ffffff00;
+    --panel: #ffffffb0;
+    --panel-solid: #ffffff;
+    --accent: #7c5cf0;
+    --accent-2: #ef4d94;
+    --accent-3: #0aa9c4;
+    --accent-soft: rgba(124, 92, 240, .1);
+    --lime: #6fae2a;
+    --orange: #ff6a3d;
     --gradient: linear-gradient(120deg, var(--accent), var(--accent-2) 55%, var(--accent-3));
-    --shadow: 0 20px 60px rgba(0, 0, 0, .45);
+    --shadow: 0 16px 40px rgba(30, 20, 60, .08);
     --radius: 14px;
 }
 
@@ -29,14 +29,14 @@
 html {
     min-width: 320px;
     background: var(--paper);
-    color-scheme: dark;
+    color-scheme: light;
 }
 
 body {
     margin: 0;
     background:
-        radial-gradient(900px 480px at 12% -10%, rgba(167, 139, 250, .16), transparent 60%),
-        radial-gradient(700px 420px at 90% 0%, rgba(34, 211, 238, .12), transparent 55%),
+        radial-gradient(900px 480px at 12% -10%, rgba(124, 92, 240, .09), transparent 60%),
+        radial-gradient(700px 420px at 90% 0%, rgba(10, 169, 196, .07), transparent 55%),
         var(--paper);
     color: var(--ink);
     font-family: 'Space Grotesk', sans-serif;
@@ -402,7 +402,7 @@ select:focus-visible {
     border: 1px solid var(--line);
     border-radius: 8px;
     color: var(--ink);
-    background: #0d0f1c;
+    background: #f3f2fa;
     outline: 0;
     font: 10.5px 'JetBrains Mono', monospace;
     transition: border-color .2s, box-shadow .2s;
@@ -522,7 +522,7 @@ select:focus-visible {
     padding: 14px;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: #0d0f1c;
+    background: #f3f2fa;
 }
 
 .settings-panel label:last-child {
@@ -574,7 +574,7 @@ select:focus-visible {
     padding: 11px 13px;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: #0d0f1c;
+    background: #f3f2fa;
 }
 
 .progress-label {
