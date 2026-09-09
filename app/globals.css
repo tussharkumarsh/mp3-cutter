@@ -301,6 +301,16 @@ select:focus-visible {
     backdrop-filter: blur(10px);
     box-shadow: var(--shadow);
     transition: background .2s, transform .2s, border-color .2s;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.track input,
+.track select {
+    touch-action: auto;
+    user-select: text;
+    -webkit-user-select: text;
 }
 
 .track:hover {
