@@ -274,48 +274,64 @@ select:focus-visible {
 }
 
 .tracks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 14px;
     margin-top: 22px;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--panel);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow);
 }
 
 .tracks-heading {
-    display: grid;
-    grid-template-columns: 1fr 1.6fr 100px 30px;
-    padding: 11px 15px 9px 48px;
-    border-bottom: 1px solid var(--line);
-    color: var(--muted);
-    font: 9.5px 'JetBrains Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-}
-
-.tracks-heading small {
-    font-size: 9.5px;
-    text-transform: none;
+    display: none;
 }
 
 .track {
     position: relative;
     display: grid;
-    grid-template-columns: 24px 34px minmax(140px, 1fr) minmax(280px, 1.5fr) 90px 32px;
-    gap: 10px;
+    grid-template-columns: 22px 26px 1fr 26px;
+    grid-template-areas:
+        "handle num file remove"
+        "fields fields fields fields"
+        "duration duration duration duration";
+    gap: 6px 8px;
     align-items: center;
-    padding: 14px 12px;
-    border-bottom: 1px solid var(--line-soft);
-    transition: background .2s;
-}
-
-.track:last-child {
-    border-bottom: 0;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    transition: background .2s, transform .2s, border-color .2s;
 }
 
 .track:hover {
-    background: rgba(167, 139, 250, .06);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.track .drag-handle {
+    grid-area: handle;
+}
+
+.track .track-number {
+    grid-area: num;
+}
+
+.track .track-file {
+    grid-area: file;
+}
+
+.track .icon-button {
+    grid-area: remove;
+}
+
+.track .segment-fields {
+    grid-area: fields;
+    margin-top: 4px;
+}
+
+.track .segment-duration {
+    grid-area: duration;
+    margin-top: 2px;
 }
 
 .drag-handle,
@@ -441,7 +457,7 @@ select:focus-visible {
 }
 
 .error {
-    grid-column: 3 / -1;
+    grid-column: 1 / -1;
     margin: 0;
     color: #ff8a7a;
     font-size: 10.5px;
@@ -667,11 +683,6 @@ footer {
         padding-block: 40px 34px;
     }
 
-    .track {
-        grid-template-columns: 24px 34px minmax(120px, 1fr) minmax(230px, 1.4fr) 78px 28px;
-        gap: 8px;
-    }
-
     .segment-fields input {
         font-size: 10px;
     }
@@ -729,42 +740,19 @@ footer {
     }
 
     .tracks {
+        grid-template-columns: 1fr;
         margin-top: 18px;
     }
 
-    .tracks-heading {
-        display: none;
-    }
-
     .track {
-        grid-template-columns: 22px minmax(0, 1fr) 30px;
-        gap: 8px;
         padding: 14px 10px;
-    }
-
-    .track-number {
-        grid-column: 1;
-        grid-row: 1 / span 2;
-    }
-
-    .track-file {
-        grid-column: 2;
-        grid-row: 1;
     }
 
     .track-file strong {
         font-size: 12.5px;
     }
 
-    .drag-handle {
-        grid-column: 1;
-        grid-row: 3;
-        align-self: end;
-    }
-
     .segment-fields {
-        grid-column: 2 / -1;
-        grid-row: 2;
         gap: 7px;
     }
 
@@ -772,18 +760,6 @@ footer {
         min-width: 0;
         padding: 9px 7px;
         font-size: 10px;
-    }
-
-    .segment-duration {
-        grid-column: 2;
-        grid-row: 3;
-        margin-top: 2px;
-    }
-
-    .icon-button {
-        grid-column: 3;
-        grid-row: 1;
-        align-self: start;
     }
 
     .error {
