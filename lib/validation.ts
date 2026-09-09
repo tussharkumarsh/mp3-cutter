@@ -3,7 +3,7 @@ import { parseTimestampToMicroseconds } from "./timestamp";
 export function validateSegment(start: string, end: string, durationMicroseconds: number) {
     const startMicroseconds = parseTimestampToMicroseconds(start);
     const endMicroseconds = parseTimestampToMicroseconds(end);
-    if (startMicroseconds === null || endMicroseconds === null) return { valid: false, error: "Use HH:MM:SS with up to 6 decimal places." };
+    if (startMicroseconds === null || endMicroseconds === null) return { valid: false, error: "Use HH:MM:SS with up to 2 decimal places." };
     if (startMicroseconds < 0) return { valid: false, error: "Start time cannot be negative." };
     if (endMicroseconds <= startMicroseconds) return { valid: false, error: "End time must be after start time." };
     if (endMicroseconds > durationMicroseconds) return { valid: false, error: "End time exceeds the source duration." };
